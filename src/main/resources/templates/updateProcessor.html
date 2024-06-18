@@ -1,0 +1,102 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Final Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+
+<div th:insert="menu :: header"></div>
+
+<main>
+    <h1 class="text-center fw-bold mt-3">Редагування</h1>
+    <h4 class="text-center fw-light">Процесор</h4>
+    <section class="py-4 px-3">
+        <div class="container">
+            <form th:action="@{/update/processor/__${processor.id}__}" th:object="${processor}" method="post"
+                  enctype="multipart/form-data">
+                <div class="input-group mb-2 row">
+                    <div class="col">
+                        <label class="mb-1">Виробник<span class="text-danger">*</span></label>
+                        <div class="form-check">
+                            <label class="form-check-label" for="Intel">
+                                <input class="form-check-input" type="radio" name="processor_type" id="Intel"
+                                       th:field="|*{manufacturer}|" value="Intel" required>
+                                Intel
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" for="Amd">
+                                <input class="form-check-input" type="radio" name="processor_type" id="Amd"
+                                       th:field="|*{manufacturer}|" value="AMD">
+                                Amd
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="processor_model" class="mb-2">Назва моделі<span class="text-danger">*</span></label>
+                        <input id="processor_model" type="text" class="form-control" th:field="|*{model}|" required>
+                    </div>
+                </div>
+                <div>
+                    <label for="processor_frequency" class="mb-2">Частота</label>
+                    <input id="processor_frequency" type="text" class="form-control" placeholder="3.7 GHz"
+                           th:field="|*{frequency}|">
+                </div>
+                <button type="submit" class="btn btn-primary mt-4">Зберегти</button>
+            </form>
+
+            <div class="text-center mt-4 mb-3">
+                <h5 class="fw-bold">Процесори</h5>
+            </div>
+            <table class="table ">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Виробник</th>
+                    <th scope="col">Модель</th>
+                    <th scope="col">Частота</th>
+                    <th scope="col" style="width: 20%"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p,iterStat : ${processors}"
+                    th:classappend="${processor.id == p.id}? 'table-warning' : ''">
+                    <th scope="row" th:text="${iterStat.index + 1}"></th>
+                    <td th:text="${p.manufacturer}"></td>
+                    <td th:text="${p.model}"></td>
+                    <td th:text="${p.frequency}"></td>
+                    <td>
+                        <a th:if="${processor.id != p.id}"
+                           type="button" class="btn btn-outline-primary "
+                           th:href="@{/update/processor/{id}(id = ${p.id})}">
+                            Редагувати
+                        </a>
+                        <a type="button" class="btn btn-outline-danger ms-2"
+                           th:href="@{/delete/processor/{id}(id = ${p.id})}">
+                            Видалити
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer class="text-muted d-flex justify-content-center py-2">
+    <a href="#" class="opacity-50 link-dark">Back to top</a>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+
+</body>
+</html>
